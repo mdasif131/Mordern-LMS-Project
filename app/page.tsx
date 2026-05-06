@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/ThemeToggle"
 import { Button } from "@/components/ui/button"
 
 export default function Page() {
@@ -12,6 +13,7 @@ export default function Page() {
         </div>
         <div className="font-mono text-xs text-muted-foreground">
           (Press <kbd>d</kbd> to toggle dark mode)
+          <ModeToggle/>
         </div>
       </div>
     </div>
