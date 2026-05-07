@@ -18,7 +18,7 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
       viewBox="0 0 350 90"
       width={width}
       height={height}
-      className={className}
+      className={`m-0 p-0! ${className}`}
       role="img"
       aria-label="MD ASIF Learning System Logo"
     >
@@ -40,7 +40,7 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
         x="78"
         y="43"
         fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
-        fontSize="32"
+        fontSize="31"
         fontWeight="800"
         letterSpacing="5"
         fill="url(#textGrad)"
@@ -50,10 +50,10 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
 
       {/* Tagline – softer, modern gray */}
       <text
-        x="78"
+        x="82"
         y="62"
-        fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
-        fontSize="10"
+        fontFamily="Inter, Arial, sans-serif"
+        fontSize="12"
         fontWeight="500"
         letterSpacing="7"
         fill="#64748B"

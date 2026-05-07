@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
-import { Loader2, Send } from "lucide-react"
+import { LoaderIcon, Send } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { useState, useTransition } from "react"
@@ -66,7 +66,7 @@ const LoginForm = () => {
         >
           {githubPending ? (
             <>
-              <Loader2 className="size-4 animate-spin" />
+              <LoaderIcon className="size-4 animate-spin" />
               <span>Loading...</span>
             </>
           ) : (
@@ -109,12 +109,12 @@ const LoginForm = () => {
           <Button onClick={signInWithEmail} disabled={emailPending}>
             {emailPending ? (
               <>
-                <Loader2 className="size-4 animate-spin" />{" "}
+                <LoaderIcon className="size-4 animate-spin" />{" "}
                 <span>Loading...</span>
               </>
             ) : (
-                <>
-                  <Send className="size-4"/>
+              <>
+                <Send className="size-4" />
                 <span>Continue with Email</span>
               </>
             )}
