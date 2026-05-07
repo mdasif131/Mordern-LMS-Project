@@ -2,12 +2,12 @@ import { buttonVariants } from "@/components/ui/button"
 import { LmsLogo } from "@/constants/Icon"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+  }) {
+  
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center">
       <div className="absolute top-5 left-5">
