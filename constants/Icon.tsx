@@ -6,7 +6,6 @@ interface LmsLogoProps {
   className?: string
 }
 
-
 export const LmsLogo: React.FC<LmsLogoProps> = ({
   width = 250,
   height = 90,
@@ -23,19 +22,21 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
       aria-label="MD ASIF Learning System Logo"
     >
       <defs>
-        {/* Main text gradient – vibrant blue to indigo */}
+        {/* Primary Gradient - From your OKLCH Green to a deeper Forest Green */}
         <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#2563EB" />
-          <stop offset="100%" stopColor="#7C3AED" />
+          <stop offset="0%" stopColor="#4ADE80" />{" "}
+          {/* Primary OKLCH equivalent */}
+          <stop offset="100%" stopColor="#166534" /> {/* Darker contrast */}
         </linearGradient>
-        {/* Accent shine */}
+
+        {/* Accent Shine - A lighter version of your primary color */}
         <linearGradient id="accentShine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#3B82F6" />
-          <stop offset="100%" stopColor="#60A5FA" />
+          <stop offset="0%" stopColor="#86EFAC" />
+          <stop offset="100%" stopColor="#4ADE80" />
         </linearGradient>
       </defs>
 
-      {/* Wordmark – bold & gradient */}
+      {/* Wordmark */}
       <text
         x="78"
         y="43"
@@ -48,7 +49,7 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
         MD ASIF
       </text>
 
-      {/* Tagline – softer, modern gray */}
+      {/* Tagline - Adjusted to a slate-gray that complements green */}
       <text
         x="82"
         y="62"
@@ -56,12 +57,12 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
         fontSize="12"
         fontWeight="500"
         letterSpacing="7"
-        fill="#64748B"
+        fill="#94A3B8"
       >
         LEARNING SYSTEM
       </text>
 
-      {/* Accent dash – brighter and with a gradient */}
+      {/* Accent dash */}
       <rect
         x="78"
         y="70"
@@ -73,3 +74,6 @@ export const LmsLogo: React.FC<LmsLogoProps> = ({
     </svg>
   )
 }
+
+
+

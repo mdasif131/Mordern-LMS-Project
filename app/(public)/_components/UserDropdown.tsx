@@ -9,11 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { authClient } from "@/lib/auth-client"
+import { useSignOut } from "@/hooks/use-signout"
 import { BookOpen, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
 
 interface iAppProps{
   name: string;
@@ -22,27 +20,14 @@ interface iAppProps{
 }
 const UserDropdown = ({name, email, image}:iAppProps) => {
 
-const router = useRouter()
-  async function signOUt() {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/")
-          toast.success("Signout successfully")
-        },
-        onError: () => {
-          toast.error("Failed to sign out")
-        }
-      },
-    })
-  }
+  const handleSignOut = useSignOut();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage src={image} alt="profile Image" />
-            <AvatarFallback>{name.slice(0,2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <ChevronDownIcon
             size={16}
@@ -57,32 +42,36 @@ const router = useRouter()
             {name}
           </span>
           <span className="truncate text-xs font-normal text-muted-foreground">
-           {email}
+            {email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href={'/'}>
+            <Link href={"/"}>
               <Home size={16} className="opacity-60" aria-hidden="true" />
               <span>Home</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={'/courses'}>
+            <Link href={"/courses"}>
               <BookOpen size={16} className="opacity-60" aria-hidden="true" />
               <span>Courses</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={'/dashboard'}>
-              <LayoutDashboardIcon size={16} className="opacity-60" aria-hidden="true" />
+            <Link href={"/dashboard"}>
+              <LayoutDashboardIcon
+                size={16}
+                className="opacity-60"
+                aria-hidden="true"
+              />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={signOUt}>
-              <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Logout</span>
+          <DropdownMenuItem onClick={handleSignOut}>
+            <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
+            <span>Logout</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -8,10 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model Test {
-  id   String @id @default(uuid())
-  test String
-}
+
 
 model User {
   id            String    @id
@@ -23,6 +19,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  courses       Course[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +71,35 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Course {
+  id          String       @id @default(ulid())
+  title       String
+  discription String
+  fileKey     String
+  price       Int
+  duration    Int
+  level       CoursesLevel @default(Beginner)
+
+  category        String
+  smallDescriptin String
+  slug            String        @unique
+  status          CoursesStatus @default(Draft)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  user            User         @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId          String
+}
+
+enum CoursesLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum CoursesStatus {
+  Draft
+  Published
+  Archie
 }
