@@ -14,7 +14,7 @@ import {
   CoursesSchemaType,
   courseStatus,
 } from "@/lib/zodSchemas"
-import { ArrowLeft, PlusIcon, SparkleIcon } from "lucide-react"
+import { ArrowLeft, Loader, PlusIcon, SparkleIcon } from "lucide-react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -38,7 +38,14 @@ import {
 } from "@/components/ui/select"
 import RichTextEditor from "@/components/rich-text-editor/Editor"
 import Uploader from "@/components/file-uploader/Uploader"
+import { useTransition } from "react";
+import { tryCatch } from "@/hooks/try-catch";
+import { CreateCourses } from "./action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const CoursesCreationPage = () => {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(coursesSchema),
     defaultValues: {
@@ -55,8 +62,20 @@ const CoursesCreationPage = () => {
     },
   })
   function onSubmit(values: CoursesSchemaType) {
-    // ✅ This will be type-safe and validated.
-    console.log("is value", values)
+    startTransition(async () => { 
+      const { data:result, error } = await tryCatch(CreateCourses(values))
+      if (error) { 
+        toast.error("An unexpected error occurred. Please try again.")
+        return;
+      }
+      if (result.status === 'success') {
+        toast.success(result.message)
+        form.reset();
+        router.push("/admin/courses")
+      } else if (result.status === 'error') { 
+        toast.error(result.message)
+      }
+    })
   }
 
   return (
@@ -167,12 +186,7 @@ const CoursesCreationPage = () => {
                   <FormItem>
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader/>
-                      {/* <Input
-                        className="mt-1 py-4.5"
-                        placeholder="thumbnail url"
-                        {...field}
-                      /> */}
+                      <Uploader onChange={field.onChange} value={field.value} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -298,10 +312,7 @@ const CoursesCreationPage = () => {
                       </FormControl>
                       <SelectContent>
                         {courseStatus.map((status, index) => (
-                          <SelectItem
-                            key={`${status}-${index}`}
-                            value={status}
-                          >
+                          <SelectItem key={`${status}-${index}`} value={status}>
                             {status}
                           </SelectItem>
                         ))}
@@ -311,7 +322,17 @@ const CoursesCreationPage = () => {
                   </FormItem>
                 )}
               />
-              <Button size={'lg'}>Create Course <PlusIcon size={16}/></Button>
+              <Button type="submit" disabled={pending} size={"lg"}>
+                {pending ? (
+                  <>
+                    Createing... <Loader className="animate-spin ml-1" />
+                  </>
+                ) : (
+                  <>
+                    Create Course <PlusIcon size={16} />
+                  </>
+                )}
+              </Button>
             </form>
           </Form>
         </CardContent>

@@ -76,14 +76,14 @@ model Verification {
 model Course {
   id          String       @id @default(ulid())
   title       String
-  discription String
+  description String
   fileKey     String
   price       Int
   duration    Int
   level       CoursesLevel @default(Beginner)
 
   category        String
-  smallDescriptin String
+  smallDescription String
   slug            String        @unique
   status          CoursesStatus @default(Draft)
   createdAt       DateTime      @default(now())

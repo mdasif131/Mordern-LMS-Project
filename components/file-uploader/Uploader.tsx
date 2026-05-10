@@ -25,7 +25,12 @@ interface UploaderState {
   objectUrl?: string
   fileType: "image" | "video"
 }
-const Uploader = () => {
+
+interface iAppProps {
+  value?: string
+  onChange?: (value: string) => void
+}
+const Uploader = ({ value, onChange }: iAppProps) => {
   const [fileState, setFileState] = useState<UploaderState>({
     error: false,
     file: null,
@@ -34,6 +39,7 @@ const Uploader = () => {
     progress: 0,
     isDeleting: false,
     fileType: "image",
+    key: value,
   })
 
   async function uploadFile(file: File) {
@@ -86,6 +92,7 @@ const Uploader = () => {
               uploading: false,
               key: key,
             }))
+            onChange?.(key)
             toast.success("File uploaded successfully")
             resolve()
           } else {
@@ -160,6 +167,7 @@ const Uploader = () => {
       if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
         URL.revokeObjectURL(fileState.objectUrl)
       }
+      onChange?.("")
       setFileState(() => ({
         file: null,
         uploading: false,
@@ -233,7 +241,7 @@ const Uploader = () => {
     multiple: false,
     maxSize: 5 * 1024 * 1024, // 5mb
     onDropRejected: rejectedFiles,
-    disabled: fileState.uploading || !!fileState.objectUrl
+    disabled: fileState.uploading || !!fileState.objectUrl,
   })
 
   return (
