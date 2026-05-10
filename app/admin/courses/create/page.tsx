@@ -36,6 +36,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import RichTextEditor from "@/components/rich-text-editor/Editor"
+import Uploader from "@/components/file-uploader/Uploader"
 const CoursesCreationPage = () => {
   const form = useForm({
     resolver: zodResolver(coursesSchema),
@@ -152,11 +154,7 @@ const CoursesCreationPage = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
-                        className="mt-1 min-h-30"
-                        placeholder="Description"
-                        {...field}
-                      />
+                      <RichTextEditor field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -167,13 +165,14 @@ const CoursesCreationPage = () => {
                 name="fileKey"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Thumnail Image</FormLabel>
+                    <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Input
+                      <Uploader/>
+                      {/* <Input
                         className="mt-1 py-4.5"
                         placeholder="thumbnail url"
                         {...field}
-                      />
+                      /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

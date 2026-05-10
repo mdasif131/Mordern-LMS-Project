@@ -1,4 +1,4 @@
-
+import "server-only"
 import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 import { prisma } from "./db"
@@ -17,14 +17,14 @@ export const auth = betterAuth({
   },
   plugins: [
     emailOTP({
-      async sendVerificationOTP({ email, otp}) { 
-   await resend.emails.send({
-   from: "MD ASIF<onboarding@resend.dev>",
-   to: [email],
-   subject: "MD ASIF LMS - Verify your email",
-   html:`<p>Your OTP is <strong>${otp}</strong></p>`,
- })
-      }
-    })
-  ]
+      async sendVerificationOTP({ email, otp }) {
+        await resend.emails.send({
+          from: "MD ASIF<onboarding@resend.dev>",
+          to: [email],
+          subject: "MD ASIF LMS - Verify your email",
+          html: `<p>Your OTP is <strong>${otp}</strong></p>`,
+        })
+      },
+    }),
+  ],
 })

@@ -10,24 +10,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useSignOut } from "@/hooks/use-signout"
-import { BookOpen, ChevronDownIcon, Home, LayoutDashboardIcon, LogOutIcon } from "lucide-react"
+import {
+  BookOpen,
+  ChevronDownIcon,
+  Home,
+  LayoutDashboardIcon,
+  LogOutIcon,
+} from "lucide-react"
 import Link from "next/link"
+import { includes } from "zod"
 
-interface iAppProps{
-  name: string;
-  email: string;
-  image: string;
+interface iAppProps {
+  name: string
+  email: string
+  image: string
 }
-const UserDropdown = ({name, email, image}:iAppProps) => {
-
-  const handleSignOut = useSignOut();
+const UserDropdown = ({ name, email, image }: iAppProps) => {
+  const subName =
+    name && name.length > 0
+      ? name.slice(0, 2).toUpperCase()
+      : email.slice(0, 2).toUpperCase()
+  const handleSignOut = useSignOut()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
-            <AvatarImage src={image} alt="profile Image" />
-            <AvatarFallback>{name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarImage
+              src={
+                !image
+                  ? `https://avatar.vercel.sh/rauchg.svg?text=${subName}`
+                  : image
+              }
+              alt="profile Image"
+            />
+            <AvatarFallback>{subName}</AvatarFallback>
           </Avatar>
           <ChevronDownIcon
             size={16}
@@ -36,7 +53,7 @@ const UserDropdown = ({name, email, image}:iAppProps) => {
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="max-w-64">
+      <DropdownMenuContent align="end" className="min-w-48">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="truncate text-sm font-medium text-foreground">
             {name}
