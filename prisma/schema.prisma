@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -6,8 +7,6 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
-
 
 model User {
   id            String    @id
@@ -20,6 +19,11 @@ model User {
   sessions      Session[]
   accounts      Account[]
   courses       Course[]
+
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
 
   @@unique([email])
   @@map("user")
@@ -35,6 +39,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@index([userId])
@@ -82,14 +88,14 @@ model Course {
   duration    Int
   level       CoursesLevel @default(Beginner)
 
-  category        String
+  category         String
   smallDescription String
-  slug            String        @unique
-  status          CoursesStatus @default(Draft)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  user            User         @relation(fields: [userId], references: [id],onDelete: Cascade)
-  userId          String
+  slug             String        @unique
+  status           CoursesStatus @default(Draft)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String
 }
 
 enum CoursesLevel {

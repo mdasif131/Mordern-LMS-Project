@@ -1,21 +1,52 @@
 "use server"
 
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
-import { ApiResponse } from "@/lib/types";
-import { coursesSchema, CoursesSchemaType } from "@/lib/zodSchemas";
-import { headers } from "next/headers";
-
-export const CreateCourses = async (data:CoursesSchemaType):Promise<ApiResponse> => { 
+import { requireAdmin } from "@/app/data/admin/require-admin"
+import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet"
+import { prisma } from "@/lib/db"
+import { ApiResponse } from "@/lib/types"
+import { coursesSchema, CoursesSchemaType } from "@/lib/zodSchemas"
+import { request } from "@arcjet/next";
+const aj = arcjet
+  .withRule(
+    detectBot({
+      mode: "LIVE",
+      allow: [],
+    })
+  )
+  .withRule(
+    fixedWindow({
+      mode: "LIVE",
+      window: "1m",
+      max: 5,
+    })
+  )
+export const CreateCourses = async (
+  data: CoursesSchemaType
+): Promise<ApiResponse> => {
+  const session = await requireAdmin()
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    const validation = coursesSchema.safeParse(data);
-    if (!validation.success) { 
+    // Access request data that Arcjet needs when you call `protect()` similarly
+    // to `await headers()` and `await cookies()` in `next/headers`
+    const req = await request()
+    const decision = await aj.protect(req, { fingerprint: session.user.id })
+    if (decision.isDenied()) { 
+      if (decision.reason.isRateLimit()) {
+        return {
+          status: "error",
+          message: "You have been blocked due to rate limiting",
+        }
+      } else { 
+       return {
+         status: "error",
+         message: "You are a bot! if this is a mistake contact our support",
+       }
+      }
+    }
+    const validation = coursesSchema.safeParse(data)
+    if (!validation.success) {
       return {
         status: "error",
-        message:"Invalid Form Data"
+        message: "Invalid Form Data",
       }
     }
     await prisma.course.create({
@@ -23,18 +54,18 @@ export const CreateCourses = async (data:CoursesSchemaType):Promise<ApiResponse>
         ...validation.data,
         smallDescription: validation.data.smallDescription,
         description: validation.data.description,
-        userId:session?.user.id as string,
+        userId: session?.user.id as string,
       },
     })
     return {
       status: "success",
-      message: "Course create successfully"
+      message: "Course create successfully",
     }
-  } catch (err) { 
-    console.log(err)
+  } catch {
+
     return {
-      status: 'error',
-      message: "Failed to create"
+      status: "error",
+      message: "Failed to create",
     }
   }
 }

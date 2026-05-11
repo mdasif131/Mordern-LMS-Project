@@ -13,6 +13,7 @@ import {
   RenderUploadedState,
   RenderUploadingState,
 } from "./RenderState"
+import { useConstructUrl } from "@/hooks/use-construct-url"
 
 interface UploaderState {
   id: string | null
@@ -31,6 +32,7 @@ interface iAppProps {
   onChange?: (value: string) => void
 }
 const Uploader = ({ value, onChange }: iAppProps) => {
+  const fileUrl = useConstructUrl(value || "")
   const [fileState, setFileState] = useState<UploaderState>({
     error: false,
     file: null,
@@ -40,6 +42,7 @@ const Uploader = ({ value, onChange }: iAppProps) => {
     isDeleting: false,
     fileType: "image",
     key: value,
+    objectUrl:fileUrl
   })
 
   async function uploadFile(file: File) {
@@ -106,9 +109,8 @@ const Uploader = ({ value, onChange }: iAppProps) => {
         xhr.setRequestHeader("Content-Type", file.type)
         xhr.send(file)
       })
-    } catch (error) {
-      console.error("Upload Error:", error)
-      toast.error("Something went wrong 02")
+    } catch {
+      toast.error("Something went wrong ")
       setFileState((prev) => ({
         ...prev,
         progress: 0,
