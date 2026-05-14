@@ -1,5 +1,4 @@
 "use server"
-
 import { requireAdmin } from "@/app/data/admin/require-admin"
 import arcjet, { detectBot, fixedWindow } from "@/lib/arcjet"
 import { prisma } from "@/lib/db"
@@ -25,8 +24,6 @@ export const CreateCourses = async (
 ): Promise<ApiResponse> => {
   const session = await requireAdmin()
   try {
-    // Access request data that Arcjet needs when you call `protect()` similarly
-    // to `await headers()` and `await cookies()` in `next/headers`
     const req = await request()
     const decision = await aj.protect(req, { fingerprint: session.user.id })
     if (decision.isDenied()) { 

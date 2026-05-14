@@ -186,7 +186,7 @@ const CoursesCreationPage = () => {
                   <FormItem>
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader onChange={field.onChange} value={field.value} />
+                      <Uploader onChange={field.onChange} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

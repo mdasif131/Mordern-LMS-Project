@@ -32,8 +32,8 @@ const AdminCourseCard = ({ data }: iAppProps) => {
       <div className="absolute top-2 right-2 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={"secondary"} size={"icon"}>
-              <MoreVertical className="size-4" />
+            <Button variant={"secondary"} size={"icon"} className="bg-secondary/40">
+              <MoreVertical className="size-4 dark:text-white"/>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
