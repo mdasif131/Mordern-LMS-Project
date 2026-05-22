@@ -324,7 +324,7 @@ const CourseStructrue = ({ data }: iAppProps) => {
                                       </Button>
                                       <FileText className="size-4" />
                                       <Link
-                                        href={`/admin/courses/${data.id}/${lesson.id}`}
+                                        href={`/admin/courses/${data.id}/${item.id}/${lesson.id}`}
                                       >
                                         {lesson.title}
                                       </Link>

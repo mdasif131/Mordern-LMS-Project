@@ -5,7 +5,6 @@ import AdminCourseCard from "./_components/AdminCourseCard";
 
 const CoursesPage = async () => {
   const data = await adminGetCourses();
-  // console.log(data)
   return (
     <>
       <div className="flex items-center justify-between">

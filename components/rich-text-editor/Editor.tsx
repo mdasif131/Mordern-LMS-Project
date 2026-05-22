@@ -3,7 +3,7 @@ import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import TextAlign from "@tiptap/extension-text-align"
 import Menubar from "./Menubar"
-const RichTextEditor = ({ field }:{field:any}) => {
+const RichTextEditor = ({ field }: { field: any }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -14,20 +14,28 @@ const RichTextEditor = ({ field }:{field:any}) => {
 
     editorProps: {
       attributes: {
-        class: "min-h-[300px] focus:outline-none p-4 prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert w-ful! max-w-none!",
+        class:
+          "min-h-[300px] focus:outline-none p-4 prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert w-ful! max-w-none!",
       },
     },
     onUpdate: ({ editor }) => {
       field.onChange(JSON.stringify(editor.getJSON()))
     },
-    content: field.value ? JSON.parse(field.value) : "<p>Hello World...</p>"
-    ,
-    immediatelyRender:false,
+    content: (() => {
+      if (!field.value) return "<p>Hello World...</p>"
+
+      try {
+        return JSON.parse(field.value)
+      } catch {
+        return field.value
+      }
+    })(),
+    immediatelyRender: false,
   })
   return (
-    <div className="w-full border border-input rounded-lg overflow-hidden dark:bg-input/30">
+    <div className="w-full overflow-hidden rounded-lg border border-input dark:bg-input/30 mt-1">
       <Menubar editor={editor} />
-      <EditorContent editor={editor}/>
+      <EditorContent editor={editor} />
     </div>
   )
 }
