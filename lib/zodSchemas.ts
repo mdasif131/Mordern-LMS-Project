@@ -37,4 +37,22 @@ export const coursesSchema = z.object({
   slug: z.string().min(3, { message: "Slug must be at least 3 characters" }),
   status: z.enum(courseStatus, { message: "Status is required" }),
 })
+
+export const chapterSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 character long"),
+  courseId: z.string().min(1, "Invalid course Id"),
+})
+export const lessonSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 character long"),
+  courseId: z.string().min(1, "Invalid course Id"),
+  chapterId: z.string().min(1, "Invalid chapter Id"),
+  description: z
+    .string()
+    .min(3, "Description must be at least 3 character long")
+    .optional(),
+  thumbnailKey: z.string().optional(),
+  videoKey: z.string().optional(),
+})
 export type CoursesSchemaType = z.infer<typeof coursesSchema>
+export type ChapterSchemaType = z.infer<typeof chapterSchema>
+export type LessonSchemaType = z.infer<typeof lessonSchema>

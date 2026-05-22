@@ -37,6 +37,10 @@ import Link from "next/link"
 import { ReactNode, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { reorderChapter, reorderLessons } from "../action"
+import NewChapterModal from "./NewChapterModal"
+import NewLessonModel from "./NewLessonModel"
+import DeleteLesson from "./DeleteLesson"
+import DeleteChapter from "./DeleteChapter"
 
 interface iAppProps {
   data: AdminCourseType
@@ -57,31 +61,31 @@ const CourseStructrue = ({ data }: iAppProps) => {
       title: chapter.title,
       order: chapter.position,
       isOpen: true, // default chapters to open
-      lessons: chapter.lession.map((lesson) => ({
+      lessons: chapter.lessons.map((lesson) => ({
         id: lesson.id,
         title: lesson.title,
         order: lesson.position,
       })),
     })) || []
   const [items, setItems] = useState(initialItems)
-  console.log(items)
 
- useEffect(() => {
-   setItems((prevItems) => {
-     return data.chapter.map((chapter) => ({
-       id: chapter.id,
-       title: chapter.title,
-       order: chapter.position,
-       isOpen: prevItems.find((item) => item.id === chapter.id)?.isOpen ?? true,
-       lessons:
-         chapter.lession.map((lesson) => ({
-           id: lesson.id,
-           title: lesson.title,
-           order: lesson.position,
-         })) || [],
-     }))
-   })
- }, [data])
+  useEffect(() => {
+    setItems((prevItems) => {
+      return data.chapter.map((chapter) => ({
+        id: chapter.id,
+        title: chapter.title,
+        order: chapter.position,
+        isOpen:
+          prevItems.find((item) => item.id === chapter.id)?.isOpen ?? true,
+        lessons:
+          chapter.lessons.map((lesson) => ({
+            id: lesson.id,
+            title: lesson.title,
+            order: lesson.position,
+          })) || [],
+      }))
+    })
+  }, [data])
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -254,6 +258,7 @@ const CourseStructrue = ({ data }: iAppProps) => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
+          <NewChapterModal courseId={data.id} />
         </CardHeader>
         <CardContent className="space-y-8">
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
@@ -293,9 +298,7 @@ const CourseStructrue = ({ data }: iAppProps) => {
                             {item.title}
                           </p>
                         </div>
-                        <Button size={"icon"} variant={"outline"}>
-                          <Trash2 className="size-4" />
-                        </Button>
+                        <DeleteChapter chapterId={item.id} courseId={data.id} />
                       </div>
                       <CollapsibleContent>
                         <div>
@@ -326,18 +329,21 @@ const CourseStructrue = ({ data }: iAppProps) => {
                                         {lesson.title}
                                       </Link>
                                     </div>
-                                    <Button size={"icon"} variant={"outline"}>
-                                      <Trash2 className="size-4" />
-                                    </Button>
+                                    <DeleteLesson
+                                      chapterId={item.id}
+                                      courseId={data.id}
+                                      lessonId={lesson.id}
+                                    />
                                   </div>
                                 )}
                               </SortableItem>
                             ))}
                           </SortableContext>
                           <div className="p-2">
-                            <Button variant={"outline"} className="w-full">
-                              Create Lesson
-                            </Button>
+                            <NewLessonModel
+                              chapterId={item.id}
+                              courseId={data.id}
+                            />
                           </div>
                         </div>
                       </CollapsibleContent>

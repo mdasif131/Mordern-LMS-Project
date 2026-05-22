@@ -321,7 +321,7 @@ export type LessonCreateInput = {
   position: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  chapter: Prisma.ChapterCreateNestedOneWithoutLessionInput
+  chapter: Prisma.ChapterCreateNestedOneWithoutLessonsInput
 }
 
 export type LessonUncheckedCreateInput = {
@@ -345,7 +345,7 @@ export type LessonUpdateInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  chapter?: Prisma.ChapterUpdateOneRequiredWithoutLessionNestedInput
+  chapter?: Prisma.ChapterUpdateOneRequiredWithoutLessonsNestedInput
 }
 
 export type LessonUncheckedUpdateInput = {

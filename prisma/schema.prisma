@@ -79,7 +79,7 @@ model Verification {
 }
 
 model Course {
-  id          String       @id @default(ulid())
+  id          String       @id @default(uuid())
   title       String
   description String
   fileKey     String
@@ -111,18 +111,18 @@ enum CoursesStatus {
 }
 
 model Chapter {
-  id        String   @id @default(ulid())
+  id        String   @id @default(uuid())
   title     String
   position  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   course    Course   @relation(fields: [courseId], references: [id])
   courseId  String
-  lession   Lesson[]
+  lessons   Lesson[]
 }
 
 model Lesson {
-  id           String  @id @default(ulid())
+  id           String  @id @default(uuid())
   title        String
   description  String?
   thumbnailKey String?
@@ -131,6 +131,6 @@ model Lesson {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  chapter   Chapter  @relation(fields: [chapterId], references: [id],onDelete: Cascade)
   chapterId String
 }

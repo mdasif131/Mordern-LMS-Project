@@ -26,7 +26,7 @@ export const adminGetCourse = async (id:string) => {
           id: true,
           title: true,
           position: true,
-          lession: {
+          lessons: {
             select: {
               id: true,
               title: true,
