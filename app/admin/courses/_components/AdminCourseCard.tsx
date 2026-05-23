@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useConstructUrl } from "@/hooks/use-construct-url"
 import {
   ArrowRight,
@@ -32,8 +33,12 @@ const AdminCourseCard = ({ data }: iAppProps) => {
       <div className="absolute top-2 right-2 z-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={"secondary"} size={"icon"} className="bg-secondary/40">
-              <MoreVertical className="size-4 dark:text-white"/>
+            <Button
+              variant={"secondary"}
+              size={"icon"}
+              className="bg-secondary/40"
+            >
+              <MoreVertical className="size-4 dark:text-white" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
@@ -47,7 +52,7 @@ const AdminCourseCard = ({ data }: iAppProps) => {
                 <Eye className="mr-2 size-4" /> Preview
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator/>
+            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link href={`/admin/courses/${data.id}/delete`}>
                 <Delete className="mr-2 size-4 text-destructive" /> Delete
@@ -96,3 +101,37 @@ const AdminCourseCard = ({ data }: iAppProps) => {
 }
 
 export default AdminCourseCard
+
+export const AdminCourseCardSkeleton = () => {
+  return (
+    <Card className="group relative gap-0 py-0">
+      <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
+        <Skeleton className="h-6 w-16 rounded-full" />
+        <Skeleton className="size-8 rounded-md" />
+      </div>
+
+      <div className="relative h-fit w-full">
+        <Skeleton className="aspect-video h-62.5 w-full rounded-t-lg object-cover" />
+      </div>
+
+      <CardContent className="p-4">
+        <Skeleton className="mb-2 h-6 w-3/4 rounded" />
+        <Skeleton className="mb-4 h-6 w-full rounded" />
+
+        <div className="mt-4 flex items-center gap-x-5">
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="size-6 rounded-md" />
+            <Skeleton className="h-4 w-10 rounded" />
+          </div>
+
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="size-6 rounded-md" />
+            <Skeleton className="h-4 w-10 rounded" />
+          </div>
+        </div>
+
+        <Skeleton className="mt-4 h-10 w-full rounded" />
+      </CardContent>
+    </Card>
+  )
+}

@@ -43,9 +43,11 @@ import { tryCatch } from "@/hooks/try-catch";
 import { CreateCourses } from "./action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useConfetti } from "@/hooks/use-confetti"
 const CoursesCreationPage = () => {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
+  const {triggerConfetti,fireWorksConfeeti} = useConfetti();
   const form = useForm({
     resolver: zodResolver(coursesSchema),
     defaultValues: {
@@ -70,6 +72,8 @@ const CoursesCreationPage = () => {
       }
       if (result.status === 'success') {
         toast.success(result.message)
+        triggerConfetti();
+        fireWorksConfeeti();
         form.reset();
         router.push("/admin/courses")
       } else if (result.status === 'error') { 

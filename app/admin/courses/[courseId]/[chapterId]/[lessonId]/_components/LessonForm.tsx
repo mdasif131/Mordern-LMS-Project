@@ -55,7 +55,7 @@ const LessonForm = ({ chapterId, data, courseId }: iAppProps) => {
       }
     })
   }
-  console.log(form.formState.errors)
+
   return (
     <div>
       <Link
