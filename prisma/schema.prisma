@@ -8,21 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  courses       Course[]
-
-  role       String?
-  banned     Boolean?  @default(false)
-  banReason  String?
-  banExpires DateTime?
+  id               String       @id
+  name             String
+  email            String
+  emailVerified    Boolean      @default(false)
+  image            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  sessions         Session[]
+  accounts         Account[]
+  courses          Course[]
+  enrollment       Enrollment[]
+  stripeCustomerId String?      @unique
+  role             String?
+  banned           Boolean?     @default(false)
+  banReason        String?
+  banExpires       DateTime?
 
   @@unique([email])
   @@map("user")
@@ -96,6 +97,7 @@ model Course {
   user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String
   chapter          Chapter[]
+  enrollment       Enrollment[]
 }
 
 enum CoursesLevel {
@@ -131,6 +133,27 @@ model Lesson {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  chapter   Chapter  @relation(fields: [chapterId], references: [id],onDelete: Cascade)
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String
+}
+
+model Enrollment {
+  id     String           @id @default(uuid())
+  amount Int
+  status EnrollmentStatus @default(Pending)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@unique([userId, courseId])
+}
+
+enum EnrollmentStatus {
+  Pending
+  Active
+  Cancelled
 }

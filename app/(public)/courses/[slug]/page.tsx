@@ -1,7 +1,7 @@
 import { getIndividualCourse } from "@/app/data/course/get-course"
+import { checkIfCourseBought } from "@/app/data/user/user-is-enrolled"
 import RenderDescription from "@/components/rich-text-editor/RenderDescription"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Collapsible,
@@ -20,11 +20,14 @@ import {
 } from "@tabler/icons-react"
 import { CheckIcon } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+import EnrollmentButton from "./_components/EnrollmentButton"
 
 type Parms = Promise<{ slug: string }>
 const SlugPage = async ({ params }: { params: Parms }) => {
   const { slug } = await params
   const course = await getIndividualCourse(slug)
+  const isEnrolled = await checkIfCourseBought(course.id)
 
   return (
     <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -167,85 +170,91 @@ const SlugPage = async ({ params }: { params: Parms }) => {
               <div className="mb-6 space-y-3 rounded-lg bg-muted p-4">
                 <h4 className="font-medium">What you will get:</h4>
                 <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        {" "}
-                        <IconClock className="size-4" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Course Duration</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.duration} hours
-                        </p>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      {" "}
+                      <IconClock className="size-4" />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <IconChartBar className="size-4" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Difficulty Level</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.level}
-                        </p>
-                      </div>
+                    <div>
+                      <p className="text-sm font-medium">Course Duration</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.duration} hours
+                      </p>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        {" "}
-                        <IconCategory className="size-4" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Category</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.category}
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconChartBar className="size-4" />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <IconBook className="size-4" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">Total Lesson</p>
-                        <p className="text-sm text-muted-foreground">
-                          {course.chapter.reduce(
-                            (total, chapter) => total + chapter.lessons.length,
-                            0
-                          ) || 0}{" "}
-                          Lessons
-                        </p>
-                      </div>
+                    <div>
+                      <p className="text-sm font-medium">Difficulty Level</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.level}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      {" "}
+                      <IconCategory className="size-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Category</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.category}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <IconBook className="size-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Total Lesson</p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.chapter.reduce(
+                          (total, chapter) => total + chapter.lessons.length,
+                          0
+                        ) || 0}{" "}
+                        Lessons
+                      </p>
                     </div>
                   </div>
                 </div>
+              </div>
 
               <div className="mb-6 space-y-3">
                 <h4>This course includes:</h4>
                 <ul className="space-y-2">
                   <li className="flex items-center gap-2 text-sm">
-                    <div className="rounded-full p-1 bg-green-500/10 text-green-500">
+                    <div className="rounded-full bg-green-500/10 p-1 text-green-500">
                       <CheckIcon className="size-3" />
                     </div>
-                      <span>Full lifetime access</span>
+                    <span>Full lifetime access</span>
                   </li>
                   <li className="flex items-center gap-2 text-sm">
-                    <div className="rounded-full p-1 bg-green-500/10 text-green-500">
+                    <div className="rounded-full bg-green-500/10 p-1 text-green-500">
                       <CheckIcon className="size-3" />
                     </div>
-                      <span>Acess on mobile and desktop</span>
+                    <span>Acess on mobile and desktop</span>
                   </li>
                   <li className="flex items-center gap-2 text-sm">
-                    <div className="rounded-full p-1 bg-green-500/10 text-green-500">
+                    <div className="rounded-full bg-green-500/10 p-1 text-green-500">
                       <CheckIcon className="size-3" />
                     </div>
-                      <span>Certification of completion</span>
+                    <span>Certification of completion</span>
                   </li>
                 </ul>
               </div>
 
-              <Button className="w-full">Enroll Now!</Button>
-              <p className="mt-3 text-center text-xs text-muted-foreground">7-day money-back guarantee</p>
+              {isEnrolled ? (
+                <Link href={"/dashboard"}>Watch Course</Link>
+              ) : (
+                <EnrollmentButton courseId={course.id} />
+              )}
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                7-day money-back guarantee
+              </p>
             </CardContent>
           </Card>
         </div>

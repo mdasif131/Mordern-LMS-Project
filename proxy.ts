@@ -1,26 +1,9 @@
-
-// import { getSessionCookie } from "better-auth/cookies"
-
-// export async function proxy(request: NextRequest) {
-//   const sessionCookie = getSessionCookie(request)
-
-//   if (!sessionCookie) {
-//     return NextResponse.redirect(new URL("/login", request.url))
-//   }
-
-//   return NextResponse.next()
-// }
-
-// export const config = {
-//   matcher: ["/admin/:path*"], // Specify the routes the middleware applies to
-// }
-
 import arcjet, { createMiddleware, detectBot } from "@arcjet/next"
 import { env } from "./lib/env"
 import { getSessionCookie } from "better-auth/cookies"
 import { NextRequest, NextResponse } from "next/server"
 const aj = arcjet({
-  key: env.ARCJET_KEY!, 
+  key: env.ARCJET_KEY!,
   rules: [
     detectBot({
       mode: "LIVE",
@@ -28,6 +11,7 @@ const aj = arcjet({
         "CATEGORY:SEARCH_ENGINE", // Google, Bing, etc
         "CATEGORY:MONITOR",
         "CATEGORY:PREVIEW",
+        "STRIPE_WEBHOOK",
 
         //"CATEGORY:MONITOR", // Uptime monitoring services
         //"CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
