@@ -10,7 +10,7 @@ const PaymentSuccessPage = () => {
   const { triggerConfetti } = useConfetti()
   useEffect(() => {
     triggerConfetti()
-  }, [])
+  }, [triggerConfetti])
   return (
     <div className="flex min-h-screen w-full flex-1 items-center justify-center">
       <Card className="w-87.5">
