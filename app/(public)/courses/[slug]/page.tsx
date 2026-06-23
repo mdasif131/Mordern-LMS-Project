@@ -22,6 +22,7 @@ import { CheckIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import EnrollmentButton from "./_components/EnrollmentButton"
+import { buttonVariants } from "@/components/ui/button"
 
 type Parms = Promise<{ slug: string }>
 const SlugPage = async ({ params }: { params: Parms }) => {
@@ -248,7 +249,12 @@ const SlugPage = async ({ params }: { params: Parms }) => {
               </div>
 
               {isEnrolled ? (
-                <Link href={"/dashboard"}>Watch Course</Link>
+                <Link
+                  className={buttonVariants({ className: "w-full" })}
+                  href={"/dashboard"}
+                >
+                  Watch Course
+                </Link>
               ) : (
                 <EnrollmentButton courseId={course.id} />
               )}
