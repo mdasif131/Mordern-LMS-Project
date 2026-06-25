@@ -34,7 +34,6 @@ interface iAppProps {
 }
 const Uploader = ({ value, onChange, fileTypeAccepted }: iAppProps) => {
   const fileUrl = useConstructUrl(value ?? "")
-
   const [fileState, setFileState] = useState<UploaderState>({
     error: false,
     file: null,

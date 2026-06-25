@@ -62,7 +62,7 @@ const AdminCourseCard = ({ data }: iAppProps) => {
         </DropdownMenu>
       </div>
       <Image
-        src={thumbnailUrl}
+        src={thumbnailUrl ?? ""}
         alt={"Tumbnail Url"}
         width={600}
         height={400}

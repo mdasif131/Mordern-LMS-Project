@@ -55,7 +55,8 @@ export const RenderUploadedState = ({
   isDeleting: boolean
   handleRemoveFile: () => void
   fileType: "image" | "video"
-}) => {
+  }) => {
+ 
   return (
     <div className="flex items-center justify-center">
       {fileType === "video" ? (
@@ -66,7 +67,7 @@ export const RenderUploadedState = ({
         />
       ) : (
         <Image
-          src={previewUrl}
+          src={previewUrl }
           alt="Uploaded File"
           fill
           className="object-contain p-2"

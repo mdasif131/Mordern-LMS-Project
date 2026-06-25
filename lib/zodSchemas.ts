@@ -13,7 +13,7 @@ export const coursesCategories = [
   "Marketing",
   "Health & Fitness",
   "Music",
-  "Teaching & Academics"
+  "Teaching & Academics",
 ] as const
 export const coursesSchema = z.object({
   title: z
@@ -27,7 +27,8 @@ export const coursesSchema = z.object({
   price: z.coerce.number().min(0, "Price must be positive"),
   duration: z.coerce.number().min(0, "Duration must be positive"),
   level: z.enum(courseLevels, { message: "Level is required" }),
-  category: z.enum(coursesCategories,{message: "Category is required"}),
+  stripePriceId: z.string().optional(),
+  category: z.enum(coursesCategories, { message: "Category is required" }),
   smallDescription: z
     .string()
     .min(3, { message: "Small Description must be at least 3 characters long" })
