@@ -1,14 +1,15 @@
 import "server-only"
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+import { redirect } from "next/navigation"
+import { cache } from "react"
 
-export async function requireUser() {
+export const requireUser = cache(async () => {
   const session = await auth.api.getSession({
-    headers: await headers()
+    headers: await headers(),
   })
   if (!session) {
-    return redirect('/login')
+    return redirect("/login")
   }
-  return session.user;
-}
+  return session.user
+})
