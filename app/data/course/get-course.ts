@@ -1,3 +1,4 @@
+import "server-only"
 import { prisma } from "@/lib/db"
 import { notFound } from "next/navigation"
 
@@ -26,16 +27,16 @@ export async function getIndividualCourse(slug: string) {
               id: true,
               title: true,
             },
-            orderBy:{position:'asc'}
-          }
+            orderBy: { position: "asc" },
+          },
         },
-        orderBy:{position: 'asc'}
-      }
+        orderBy: { position: "asc" },
+      },
     },
   })
   if (!data) {
-    return notFound();
-}
+    return notFound()
+  }
   return data
 }
 export type IndividuaCourseType = Awaited<
